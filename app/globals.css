@@ -1,26 +1,283 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  background: #f7f8f4;
+  color: #1f2933;
+}
+
+.page {
+  min-height: 100vh;
+}
+
+/* HERO */
+
+.hero {
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  padding: 80px 8%;
+  background:
+    linear-gradient(
+      rgba(20, 50, 25, 0.72),
+      rgba(20, 50, 25, 0.72)
+    ),
+    url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=80");
+
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-content {
+  max-width: 700px;
+  color: white;
+}
+
+.tagline {
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-size: 58px;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.hero h1 span {
+  display: block;
+}
+
+.hero-text {
+  max-width: 620px;
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 35px;
+}
+
+.hero-button {
+  display: inline-block;
+  background: #ffffff;
+  color: #1d5c32;
+  padding: 15px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* BENEFITS */
+
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  padding: 60px 8%;
+  background: white;
+}
+
+.benefit {
+  text-align: center;
+  padding: 25px;
+}
+
+.icon {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+
+.benefit h3 {
+  font-size: 21px;
+  margin-bottom: 10px;
+}
+
+.benefit p {
+  color: #667085;
+  line-height: 1.6;
+}
+
+/* FORM SECTION */
+
+.form-section {
+  padding: 80px 20px;
+}
+
+.form-container {
+  max-width: 900px;
+  margin: auto;
+  background: white;
+  padding: 45px;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.form-heading {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.form-heading .tagline {
+  color: #287a43;
+}
+
+.form-heading h2 {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.form-heading p:last-child {
+  color: #667085;
+}
+
+/* FORM */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d0d5dd;
+  border-radius: 7px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #287a43;
+  box-shadow: 0 0 0 3px rgba(40, 122, 67, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #287a43;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background: #1f6034;
+}
+
+/* SUCCESS */
+
+.success-message {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.success-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #287a43;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.success-message h2 {
+  margin-bottom: 12px;
+}
+
+.success-message p {
+  color: #667085;
+  margin-bottom: 25px;
+}
+
+.again-button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 7px;
+  background: #287a43;
+  color: white;
+  cursor: pointer;
+}
+
+/* FOOTER */
+
+footer {
+  padding: 25px;
+  text-align: center;
+  background: #183b24;
+  color: white;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 500px;
+    padding: 60px 25px;
+  }
+
+  .hero h1 {
+    font-size: 40px;
+  }
+
+  .hero-text {
+    font-size: 16px;
+  }
+
+  .benefits {
+    grid-template-columns: 1fr;
+    padding: 40px 25px;
+  }
+
+  .form-section {
+    padding: 50px 15px;
+  }
+
+  .form-container {
+    padding: 25px 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-heading h2 {
+    font-size: 28px;
+  }
 }

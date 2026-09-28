@@ -1,69 +1,328 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { supabase } from "../lib/supabase";
 
 export default function Home() {
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setLoading(true);
+    setError("");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const lead = {
+      name: formData.get("name") as string,
+      phone: formData.get("phone") as string,
+      email: formData.get("email") as string,
+      location: formData.get("location") as string,
+      interest: formData.get("interest") as string,
+      budget: formData.get("budget") as string,
+      message: formData.get("message") as string,
+    };
+
+    const { error } = await supabase
+      .from("leads")
+      .insert([lead]);
+
+    setLoading(false);
+
+    if (error) {
+      console.error(error);
+      setError("Unable to submit your enquiry. Please try again.");
+      return;
+    }
+
+    form.reset();
+    setSubmitted(true);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="page">
+      <section className="hero">
+        <div className="hero-content">
+          <p className="tagline">
+            🌱 PREMIUM AGRICULTURAL FARMS
+          </p>
+
+          <h1>
+            Find Your Perfect
+            <span> Farm Land</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p className="hero-text">
+            Explore premium agricultural farm lands around
+            Bengaluru and Mysuru. Submit your enquiry and
+            our team will contact you.
+          </p>
+
+          <a href="#enquiry" className="hero-button">
+            Enquire Now
+          </a>
+        </div>
+      </section>
+
+      <section className="benefits">
+        <div className="benefit">
+          <div className="icon">🌿</div>
+          <h3>Premium Farm Lands</h3>
+          <p>
+            Carefully selected agricultural properties.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="benefit">
+          <div className="icon">📍</div>
+          <h3>Great Locations</h3>
+          <p>
+            Properties around Bengaluru and Mysuru.
+          </p>
         </div>
-      </main>
-    </div>
+
+        <div className="benefit">
+          <div className="icon">🤝</div>
+          <h3>Personal Assistance</h3>
+          <p>
+            Get assistance throughout your enquiry.
+          </p>
+        </div>
+      </section>
+
+      <section id="enquiry" className="form-section">
+        <div className="form-container">
+
+          <div className="form-heading">
+            <p className="tagline">
+              GET IN TOUCH
+            </p>
+
+            <h2>
+              Farm Property Enquiry
+            </h2>
+
+            <p>
+              Tell us what you are looking for and
+              our team will get back to you.
+            </p>
+          </div>
+
+          {submitted ? (
+            <div className="success-message">
+              <div className="success-icon">
+                ✓
+              </div>
+
+              <h2>
+                Thank You!
+              </h2>
+
+              <p>
+                Your enquiry has been received.
+                Our team will contact you shortly.
+              </p>
+
+              <button
+                onClick={() => setSubmitted(false)}
+                className="again-button"
+              >
+                Submit Another Enquiry
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+
+              <div className="form-grid">
+
+                <div className="form-group">
+                  <label htmlFor="name">
+                    Full Name *
+                  </label>
+
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="phone">
+                    Phone Number *
+                  </label>
+
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="Enter your phone number"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">
+                    Email Address
+                  </label>
+
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Enter your email"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="location">
+                    Your Location
+                  </label>
+
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    placeholder="e.g. Bengaluru"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="interest">
+                    Farm Interest *
+                  </label>
+
+                  <select
+                    id="interest"
+                    name="interest"
+                    required
+                  >
+                    <option value="">
+                      Select your interest
+                    </option>
+
+                    <option value="Agricultural Land">
+                      Agricultural Land
+                    </option>
+
+                    <option value="Farm House">
+                      Farm House
+                    </option>
+
+                    <option value="Farm Plot">
+                      Farm Plot
+                    </option>
+
+                    <option value="Weekend Farm">
+                      Weekend Farm
+                    </option>
+
+                    <option value="Investment Land">
+                      Investment Land
+                    </option>
+
+                    <option value="Organic Farm">
+                      Organic Farm
+                    </option>
+
+                    <option value="Other">
+                      Other
+                    </option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="budget">
+                    Budget
+                  </label>
+
+                  <select
+                    id="budget"
+                    name="budget"
+                  >
+                    <option value="">
+                      Select your budget
+                    </option>
+
+                    <option value="Below ₹25 Lakhs">
+                      Below ₹25 Lakhs
+                    </option>
+
+                    <option value="₹25–50 Lakhs">
+                      ₹25–50 Lakhs
+                    </option>
+
+                    <option value="₹50 Lakhs–₹1 Crore">
+                      ₹50 Lakhs–₹1 Crore
+                    </option>
+
+                    <option value="₹1–2 Crores">
+                      ₹1–2 Crores
+                    </option>
+
+                    <option value="Above ₹2 Crores">
+                      Above ₹2 Crores
+                    </option>
+
+                    <option value="Not Decided">
+                      Not Decided
+                    </option>
+                  </select>
+                </div>
+
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="message">
+                  Message
+                </label>
+
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  placeholder="Tell us what type of farm property you are looking for..."
+                />
+              </div>
+
+              {error && (
+                <p
+                  style={{
+                    color: "red",
+                    marginBottom: "15px",
+                  }}
+                >
+                  {error}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="submit-button"
+                disabled={loading}
+              >
+                {loading
+                  ? "Submitting..."
+                  : "Submit Enquiry"}
+              </button>
+
+            </form>
+          )}
+
+        </div>
+      </section>
+
+      <footer>
+        <p>
+          © 2026 GreenLand Farms. All rights reserved.
+        </p>
+      </footer>
+    </main>
   );
 }
